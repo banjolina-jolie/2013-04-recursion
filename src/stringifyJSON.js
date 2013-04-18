@@ -3,82 +3,37 @@
 
 // but you don't so you're going to have to write it from scratch:
 
-
 var stringifyJSON = function (obj) {
-	var answer;
-	if(obj === null) {
-		answer = 'null';
-	} else if(typeof(obj) === 'number' || typeof(obj) === 'boolean') {
-		answer = obj.toString();
+	if (obj === null) {
+		return "null";
+	} else if (typeof(obj) === 'number' || typeof(obj) === 'boolean') {
+		return obj.toString();
 	} else if (typeof(obj) === 'string') {
-		answer = '"' + obj + '"';
+		return '"' + obj + '"';
 	} else {
-		if(Array.isArray(obj)) {
+		if (Array.isArray(obj)) {
 			var stringedArray = '[';
-			for (var i = 0; i < obj.length; i++){
-  				if (i > 0){
-  					stringedArray += ',';
-  				}
+			for (var i = 0; i < obj.length; i++) {
+				if (i > 0) {
+					stringedArray += ',';
+				}
 				stringedArray += stringifyJSON(obj[i]);
-			};
-			stringedArray += ']';
-			answer = stringedArray;
+			}
+			return stringedArray += ']';
 		} else {
-			if(Object.keys(obj).length === 0) {
-				answer = "{}";
+			if (Object.keys(obj).length === 0) {
+				return "{}";
 			} else {
-				var stringedObject = [];
-			 	for (var key in obj) {
-			 		if(typeof(obj[key]) != 'function' && key != "undefined")
-			 		stringedObject.push('' + stringifyJSON(key) + ":" + stringifyJSON(obj[key]));
-			 	}
-			 	stringedObject = stringedObject.join();
-			 	answer = '{' + stringedObject + '}';
+				var stringedObject = '';
+				for (var i in obj) {
+					if (typeof(obj[i]) != 'function' && i != 'undefined') {
+						stringedObject += '' + stringifyJSON(i) + ":" + stringifyJSON(obj[i]);
+						stringedObject += ",";
+					}
+				}
+				stringedObject = "{" + stringedObject + "}";
+				return stringedObject.replace(",}", "}");
 			}
 		}
 	}
-	return answer;
 };
-
-
-
-//this next way deals with objects a little differently but still works.
-
-// var stringifyJSON = function (obj) {
-// 	var answer;
-// 	if(obj === null) {
-// 		answer = 'null';
-// 	} else if(typeof(obj) === 'number' || typeof(obj) === 'boolean') {
-// 		answer = obj.toString();
-// 	} else if (typeof(obj) === 'string') {
-// 		answer = '"' + obj + '"';
-// 	} else {
-// 		if(Array.isArray(obj)) {
-// 			var stringedArray = '[';
-// 			for (var i = 0; i < obj.length; i++){
-//   				if (i > 0){
-//   					stringedArray += ',';
-//   				}
-// 				stringedArray += stringifyJSON(obj[i]);
-// 			};
-// 			stringedArray += ']';
-// 			answer = stringedArray;
-// 		} else {
-// 			if(Object.keys(obj).length === 0) {
-// 				return "{}";
-// 			} else {
-// 				var stringedObject = "";
-// 			 	for (var key in obj) {
-// 			 		if(typeof(obj[key]) != 'function' && key != "undefined") {
-// 			 			stringedObject += '' + stringifyJSON(key) + ":" + stringifyJSON(obj[key]);
-// 			 			stringedObject += ',';
-// 			 		}
-// 			 	}
-// 			 	stringedObject = "{" + stringedObject + "}"
-// 			 	stringedObject = stringedObject.replace(',}' , '}');
-// 			 	answer = stringedObject;
-// 			}
-// 		}
-// 	}
-// 	return answer;
-// };
